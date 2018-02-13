@@ -2,7 +2,10 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
+var http = require('http').Server(app);
+
 app.use(bodyParser.json());
+
 /*
 //TO ADD A CLIENT FOLDER AND MAKE IT WORK:
 app.use(express.static(path.join(__dirname, '/client')));
@@ -10,7 +13,6 @@ app.use(express.static(path.join(__dirname, '/client')));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/client/index.html'));
 });
-
 */
 
 app.use(express.static(path.join(__dirname, '/')));
@@ -34,15 +36,14 @@ curl -i \
     -H "X-HTTP-Method-Override: PUT" \
     -X POST -d "username":"30":true \
     http://localhost:3000/api/posts
-
-
 */
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname,  'index.html'));
 });
 
+app.set('port', (process.env.PORT || 3000));
 
-app.listen(3000, function () {
+http.listen(app.get('port'), function () {
   console.log('Example app listening on port 3000!');
 });
